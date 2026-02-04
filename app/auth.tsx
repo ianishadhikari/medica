@@ -1,16 +1,27 @@
 import { useState, useEffect } from "react";
 import { View, Image, Text, StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router"; // helps to navigate between screens
-import * as LocalAuthentication from "expo-local-authentication";
-import { Ionicons } from "@expo/vector-icons";
 import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
-import { LinearGradient } from "expo-linear-gradient";
 import { TextInput } from "react-native-gesture-handler";
 
 const { width } = Dimensions.get("window");
 
 export default function AuthScreen() {
+  const router = useRouter();
+  const [medicalID, setMedicalID] = useState("");
+  const [password, setPassword] = useState("");
+
+  const VALID_ID = "MED123";
+  const VALID_PASSWORD = "123456";
+
+  const handleLogin = () => {
+    if (medicalID === VALID_ID && password === VALID_PASSWORD) {
+      router.replace("/home");
+    } else {
+      alert("Invalid ID or Password");
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.topImageContainer}>
@@ -35,7 +46,12 @@ export default function AuthScreen() {
           color={"#9A9A9A"}
           style={styles.inputIcon}
         />
-        <TextInput style={styles.TextInput} placeholder="ID" />
+        <TextInput
+          style={styles.TextInput}
+          placeholder="ID"
+          value={medicalID}
+          onChangeText={setMedicalID}
+        />
       </View>
       <View style={styles.inputContainer}>
         <Entypo
@@ -48,10 +64,14 @@ export default function AuthScreen() {
           style={styles.TextInput}
           placeholder="Password"
           secureTextEntry={true}
+          value={password}
+          onChangeText={setPassword}
         />
       </View>
       <View style={styles.loginButtonContainer}>
-        <Text style={styles.loginButtonText}>Login</Text>
+        <Text style={styles.loginButtonText} onPress={handleLogin}>
+          Login
+        </Text>
       </View>
 
       <View>
